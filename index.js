@@ -1,14 +1,19 @@
-import dotenv from 'dotenv';
+import { append } from 'domutils';
+import dotenv from "dotenv";
 dotenv.config();
 
 import { search } from "./api"
+import { appendMovies, clearMovies } from './ui';
 
 (() => {
   const handleSearchButtonClick = () => {
-    const searchTerm = document.getElementById('search-pane-input').nodeValue;
+    const searchTerm = document.getElementById('search-pane-input').value;
+
+    clearMovies();
 
     search(searchTerm)
       .then((response) => {
+        appendMovies(response.Search);
         console.log(response);
       })
       .catch((error) => {
