@@ -1,3 +1,6 @@
+const FALLBACK_POSTER_URL = 'https://upload.wikimedia.org/wikipedia/commons/e/e6/Movie_stub_film.svg';
+
+
 export const clearMovies = () => {
   const list = document.getElementById('search-results');
   
@@ -29,10 +32,15 @@ const createListItem = (title, year, poster) => {
 }
 
 export const appendMovies = (movies) => {
-  const list = document.getElementById('search-results'); 
+  const list = document.getElementById('search-results');
 
   movies.forEach((movie) => {
-    const listItemNode = createListItem(movie.Title, movie.Year, movie.Poster);
+    const moviePoster = movie.Poster && movie.Poster !== "N/A" ? movie.Poster : FALLBACK_POSTER_URL;
+    const listItemNode = createListItem(movie.Title, movie.Year, moviePoster);
     list.appendChild(listItemNode);
   })
+};
+
+export const setMessage = (message) => {
+  document.getElementById('search-pane-message').textContent = message;
 }

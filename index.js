@@ -3,21 +3,27 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { search } from "./api"
-import { appendMovies, clearMovies } from './ui';
+import { appendMovies, clearMovies, setMessage } from './ui';
 
 (() => {
   const handleSearchButtonClick = () => {
     const searchTerm = document.getElementById('search-pane-input').value;
 
     clearMovies();
+    setMessage('searching for movies, please wait...');
 
     search(searchTerm)
       .then((response) => {
-        appendMovies(response.Search);
-        console.log(response);
+        if (response.Response === "True") {
+          appendMovies(response.Search);
+          setMessage();
+        } else {
+          setMessage('could not find any matches, please refine your search term');
+        }
+  
       })
       .catch((error) => {
-        console.error(error);
+        setMessage('unexpected error occurred, please try again later');
     })
   }
 
